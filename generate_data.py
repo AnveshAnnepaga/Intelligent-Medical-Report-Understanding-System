@@ -44,7 +44,7 @@ def generate_dataset(num_samples=1000):
     for _ in range(num_samples):
         specialty = random.choice(list(specialties.keys()))
         report = generate_report(specialty)
-        data.append({'specialty': specialty, 'transcription': report})
+        data.append({'medical_specialty': specialty, 'transcription': report})
     
     df = pd.DataFrame(data)
     # Add some noise/imbalance if we want, but let's keep it mostly balanced for now
