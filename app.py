@@ -169,7 +169,23 @@ st.markdown("""
 @st.cache_resource
 def load_artifacts():
     if not os.path.exists('medical_attention_model.keras'):
-        return None, None, None, None
+        with st.spinner("Model not found. Auto-training a new model (this will take a minute)..."):
+            # Import training module dynamically
+            import train
+            import generate_data
+            
+            # Check if mtsamples exists, if not generate synthetic data
+            if not os.path.exists('mtsamples.csv'):
+                st.toast("Generating synthetic medical dataset...")
+                df = generate_data.generate_dataset(1000)
+                df.to_csv('mtsamples.csv', index=False)
+                
+            st.toast("Training Self-Attention Model...")
+            train.train()
+            st.toast("Model trained successfully!", icon="✅")
+            
+        if not os.path.exists('medical_attention_model.keras'):
+             return None, None, None, None
         
     with open('tokenizer.pkl', 'rb') as f:
         tokenizer = pickle.load(f)
