@@ -174,11 +174,10 @@ def load_artifacts():
             import train
             import generate_data
             
-            # Check if mtsamples exists, if not generate synthetic data
-            if not os.path.exists('mtsamples.csv'):
-                st.toast("Generating synthetic medical dataset...")
-                df = generate_data.generate_dataset(1000)
-                df.to_csv('mtsamples.csv', index=False)
+            # Forcibly overwrite any corrupted lingering datasets on the server
+            st.toast("Generating synthetic medical dataset...")
+            df = generate_data.generate_dataset(1000)
+            df.to_csv('mtsamples.csv', index=False)
                 
             st.toast("Training Self-Attention Model...")
             train.train()
