@@ -132,7 +132,8 @@ def train():
     model.fit(X_train, y_train, epochs=5, batch_size=32, validation_data=(X_test, y_test))
     
     print("Saving artifacts...")
-    model.save('medical_attention_model.keras')
+    # Save the attention_model directly to avoid weight transfer issues later
+    attention_model.save('attention_model_v2.keras')
     with open('tokenizer.pkl', 'wb') as f:
         pickle.dump(tokenizer, f)
     with open('label_encoder.pkl', 'wb') as f:

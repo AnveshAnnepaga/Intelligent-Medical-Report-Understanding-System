@@ -168,7 +168,7 @@ st.markdown("""
 # --- Load Models & Artifacts ---
 @st.cache_resource
 def load_artifacts():
-    if not os.path.exists('medical_attention_model.keras'):
+    if not os.path.exists('attention_model_v2.keras'):
         with st.spinner("Model not found. Auto-training a new model (this will take a minute)..."):
             # Import training module dynamically
             import train
@@ -183,7 +183,7 @@ def load_artifacts():
             train.train()
             st.toast("Model trained successfully!", icon="✅")
             
-        if not os.path.exists('medical_attention_model.keras'):
+        if not os.path.exists('attention_model_v2.keras'):
              return None, None, None, None
         
     with open('tokenizer.pkl', 'rb') as f:
@@ -193,10 +193,8 @@ def load_artifacts():
     with open('model_config.pkl', 'rb') as f:
         config = pickle.load(f)
         
-    num_classes = len(label_encoder.classes_)
-    _, attention_model = build_model(config['max_len'], config['max_vocab_size'], num_classes)
-    trained_model = load_model('medical_attention_model.keras', custom_objects={'PositionalEncoding': PositionalEncoding})
-    attention_model.set_weights(trained_model.get_weights())
+    # Directly load the model that outputs both predictions and attention scores
+    attention_model = load_model('attention_model_v2.keras', custom_objects={'PositionalEncoding': PositionalEncoding})
     
     return attention_model, tokenizer, label_encoder, config
 
