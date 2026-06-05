@@ -1,8 +1,0 @@
-pandas
-numpy
-tensorflow-cpu
-scikit-learn
-streamlit
-matplotlib
-seaborn
-fpdf
